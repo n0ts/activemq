@@ -25,3 +25,21 @@ default['activemq']['wrapper']['useDedicatedTaskRunner'] = 'true'
 
 default['activemq']['enable_stomp'] = true
 default['activemq']['use_default_config'] = false
+
+# Web Console
+# http://activemq.apache.org/web-console.html
+default['activemq']['jetty']['roles'] = {
+  :admin => {
+    :username => 'admin',
+    :password => 'admin',
+  },
+}
+
+# Version 5.3.0 or later
+# encrypted password support version 5.4.1 or later
+# http://activemq.apache.org/security.html
+default['activemq']['credentials'] = {
+  :username => 'system',
+  :password => 'manager',
+}
+default['activemq']['encrypt_credentials'] = false
