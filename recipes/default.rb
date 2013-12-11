@@ -76,3 +76,37 @@ template "#{activemq_home}/bin/linux/wrapper.conf" do
   mode     '0644'
   notifies :restart, 'service[activemq]'
 end
+
+template "#{activemq_home}/conf/credentials.properties" do
+  source "credentials.properties.erb"
+  mode 0640
+  owner "activemq"
+  group "activemq"
+  action :create
+  notifies :restart, "service[activemq]"
+end
+
+file "#{activemq_home}/conf/credentials-enc.properties" do
+  action :delete
+  only_if { node[:activemq][:encrypt_credentials] == false }
+end
+
+template "#{activemq_home}/conf/jetty.xml" do
+  source "jetty.xml.erb"
+  mode 0644
+  owner "activemq"
+  group "activemq"
+  action :create
+  notifies :restart, "service[activemq]"
+  not_if { node[:activemq][:jetty].empty? }
+end
+
+template "#{activemq_home}/conf/jetty-realm.properties" do
+  source "jetty-realm.properties.erb"
+  mode 0640
+  owner "activemq"
+  group "activemq"
+  action :create
+  notifies :restart, "service[activemq]"
+  not_if { node[:activemq][:jetty].empty? }
+end
