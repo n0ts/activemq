@@ -50,6 +50,7 @@ arch = node['kernel']['machine'] == 'x86_64' ? 'x86-64' : 'x86-32'
 
 link '/etc/init.d/activemq' do
   to "#{activemq_home}/bin/linux-#{arch}/activemq"
+  only_if  { node['activemq']['use_default_config'] }
 end
 
 template "#{activemq_home}/conf/activemq.xml" do
