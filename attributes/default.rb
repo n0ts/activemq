@@ -28,7 +28,7 @@ default['activemq']['use_default_config'] = false
 
 # Web Console
 # http://activemq.apache.org/web-console.html
-default['activemq']['jetty']['roles'] = {
+default['activemq']['roles'] = {
   :admin => {
     :username => 'admin',
     :password => 'admin',

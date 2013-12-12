@@ -84,12 +84,27 @@ template "#{activemq_home}/conf/credentials.properties" do
   owner "activemq"
   group "activemq"
   action :create
-  notifies :restart, "service[activemq]"
 end
 
 file "#{activemq_home}/conf/credentials-enc.properties" do
   action :delete
   only_if { node[:activemq][:encrypt_credentials] == false }
+end
+
+template "#{activemq_home}/conf/users.properties" do
+  source "users.properties.erb"
+  mode 0640
+  owner "activemq"
+  group "activemq"
+  action :create
+end
+
+template "#{activemq_home}/conf/groups.properties" do
+  source "groups.properties.erb"
+  mode 0640
+  owner "activemq"
+  group "activemq"
+  action :create
 end
 
 template "#{activemq_home}/conf/jetty.xml" do
@@ -99,7 +114,7 @@ template "#{activemq_home}/conf/jetty.xml" do
   group "activemq"
   action :create
   notifies :restart, "service[activemq]"
-  not_if { node[:activemq][:jetty].empty? }
+  not_if { node[:activemq][:roles].empty? }
 end
 
 template "#{activemq_home}/conf/jetty-realm.properties" do
@@ -109,5 +124,5 @@ template "#{activemq_home}/conf/jetty-realm.properties" do
   group "activemq"
   action :create
   notifies :restart, "service[activemq]"
-  not_if { node[:activemq][:jetty].empty? }
+  not_if { node[:activemq][:roles].empty? }
 end
